@@ -18,7 +18,7 @@ namespace ServiceAPI
             Task restService = host.RunAsync();
 
 
-            //using (var context = new StudentsDbContext())
+            //using (var context = new UniversityDbContext())
             //{
             //    // Create database
             //    context.Database.EnsureCreated();
