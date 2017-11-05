@@ -8,11 +8,11 @@ namespace ServiceAPI.Dal
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int  CreditNumber { get; set; }
+        public string CreditNumber { get; set; }
 
-        public int Semester { get; set; }
+        public string Semester { get; set; }
 
-        public int Years { get; set; }
+        public string Years { get; set; }
 
         public virtual Teacher Teacher { get; set; }
 

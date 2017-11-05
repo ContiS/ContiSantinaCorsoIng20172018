@@ -6,7 +6,7 @@ import 'rxjs/add/observable/forkJoin';
 @Component({
     selector: 'students',
     templateUrl: './students.component.html',
-    styleUrls: ['./students.component.css']
+    styleUrls: ['../students.component.css']
 })
 export class StudentsComponent {
     public students: Student[];
@@ -17,7 +17,7 @@ export class StudentsComponent {
     }
 
     async refreshData() {
-        this.http.get(this.baseUrl + 'api/students').subscribe(result => {
+        this.http.get(this.baseUrl + 'api/studentmanagement/students').subscribe(result => {
             let studentList = [];
 
             for (let stud of result.json() as Student[]) {
@@ -25,6 +25,10 @@ export class StudentsComponent {
                 let student = new Student();
                 student.id = stud.id;
                 student.name = stud.name;
+                student.surname = stud.surname,
+                student.birthPlace = stud.birthPlace,
+                student.academicYear = stud.academicYear,
+                student.regular = stud.regular,
                 student.dateOfBirth = stud.dateOfBirth;
                 student.hasChanges = false;
                 studentList.push(student);
@@ -65,18 +69,18 @@ export class StudentsComponent {
 
                 if (!student.id) { //create
                     if (!student.deleted) {
-                        let call = this.http.put(this.baseUrl + 'api/students', json, { headers: headers });
+                        let call = this.http.put(this.baseUrl + 'api/studentmanagement/students', json, { headers: headers });
                         serverCalls.push(call);
                     }
                 }
                 else {
                     if (student.deleted) {
-                        let url = this.baseUrl + 'api/students?id=' + student.id;
+                        let url = this.baseUrl + 'api/studentmanagement/students?id=' + student.id;
                         let call = this.http.delete(url, { headers: headers });
                         serverCalls.push(call);
                     }
                     else {
-                        let call = this.http.post(this.baseUrl + 'api/students', json, { headers: headers });
+                        let call = this.http.post(this.baseUrl + 'api/studentmanagement/students', json, { headers: headers });
                         serverCalls.push(call);
                     }
 
@@ -120,6 +124,11 @@ class Student {
     id: number;
 
     private _name: string = "";
+    private _surname: string = "";
+    private _birthPlace: string = "";
+    private _academicYear: string = "";
+    private _regular: boolean = true;
+
     private _dateOfBirth: Date;
     public hasChanges: boolean;
     public deleted: boolean = false;
@@ -132,6 +141,46 @@ class Student {
         this.hasChanges = true;
         console.log("set name");
     }
+
+
+    get surname(): string {
+        return this._surname;
+    }
+    set surname(n: string) {
+        this._surname = n;
+        this.hasChanges = true;
+        console.log("set surname");
+    }
+
+    get birthPlace(): string {
+        return this._birthPlace;
+    }
+    set birthPlace(n: string) {
+        this._birthPlace = n;
+        this.hasChanges = true;
+        console.log("set birthPlace");
+    }
+
+
+    get academicYear(): string {
+        return this._academicYear;
+    }
+    set academicYear(n: string) {
+        this._academicYear = n;
+        this.hasChanges = true;
+        console.log("set academicYear");
+    }
+
+
+    get regular(): boolean {
+        return this._regular;
+    }
+    set regular(n: boolean) {
+        this._regular = n;
+        this.hasChanges = true;
+        console.log("set regular");
+    }
+
 
     get dateOfBirth(): Date {
         return this._dateOfBirth;
@@ -146,6 +195,10 @@ class Student {
         return {
             id: this.id,
             name: this._name,
+            surname: this.surname,
+            birthPlace: this.birthPlace,
+            academicYear: this.academicYear,
+            regular: this.regular,
             dateOfBirth: this._dateOfBirth,
         };
     };

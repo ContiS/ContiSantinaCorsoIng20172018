@@ -1,0 +1,32 @@
+<h1>Teachers List <button (click)="addNewTeacher()"> + </button></h1>
+
+<p *ngIf="!teachers"><em>Loading...</em></p>
+
+<div class="student-home">
+    <div class="students-list" *ngIf="teachers">
+        <div *ngFor="let teach of teachers"
+            [class.selected]="teach === selectedTeacher"
+            (click)="onSelect(teach)"
+             [hidden]="teach.deleted"
+             >
+            <span class="badge">{{teach.id || '-' }}</span> {{teach.name}} {{teach.surname}}<span>{{teach.hasChanges?'*':''}}</span>
+            <span class="badge" style="float: right;" (click)="delete(teach)">delete</span>
+        </div>
+    </div>
+    <div *ngIf="selectedTeacher" class="student-detail">
+        <h2 *ngIf="selectedTeacher.id > 0">{{selectedTeacher.id}} - {{selectedTeacher.name}} {{selectedTeacher.surname}}</h2>
+        <h2 *ngIf="!selectedTeacher.id">New Teacher</h2>
+        <div>
+            <label>Name: </label>
+            <input [(ngModel)]="selectedTeacher.name" placeholder="name" />
+        </div>
+        <div>
+            <label>Surname: </label>
+            <input [(ngModel)]="selectedTeacher.surname" placeholder="surname" />
+        </div>        
+    </div>
+</div>
+
+<div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create" (click)="saveChanges()">
+    <span>SAVE</span>
+</div>

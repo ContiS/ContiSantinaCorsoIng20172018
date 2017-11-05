@@ -9,15 +9,32 @@
             (click)="onSelect(stud)"
              [hidden]="stud.deleted"
              >
-            <span class="badge">{{stud.id || '-' }}</span> {{stud.name}} <span>{{stud.hasChanges?'*':''}}</span><span class="badge" style="float: right;" (click)="delete(stud)">delete</span>
+            <span class="badge">{{stud.id || '-' }}</span> {{stud.name}} {{stud.surname}}<span>{{stud.hasChanges?'*':''}}</span>
+            <span class="badge" style="float: right;" (click)="delete(stud)">delete</span>
         </div>
     </div>
     <div *ngIf="selectedStudent" class="student-detail">
-        <h2 *ngIf="selectedStudent.id > 0">{{selectedStudent.name}} ({{selectedStudent.id}})</h2>
+        <h2 *ngIf="selectedStudent.id > 0">{{selectedStudent.id}} - {{selectedStudent.name}} {{selectedStudent.surname}}</h2>
         <h2 *ngIf="!selectedStudent.id">New Student</h2>
         <div>
             <label>Name: </label>
             <input [(ngModel)]="selectedStudent.name" placeholder="name" />
+        </div>
+        <div>
+            <label>Surname: </label>
+            <input [(ngModel)]="selectedStudent.surname" placeholder="surname" />
+        </div>
+        <div>
+            <label>Birth Place: </label>
+            <input [(ngModel)]="selectedStudent.birthPlace" placeholder="birthPlace" />
+        </div>
+        <div>
+            <label>Academic Year: </label>
+            <input [(ngModel)]="selectedStudent.academicYear" placeholder="academicYear" />
+        </div>
+        <div>
+            <label>Regular: </label>
+            <input [(ngModel)]="selectedStudent.regular" placeholder="regular" />
         </div>
         <div>
             <label>Date Of Birth: </label>

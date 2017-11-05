@@ -9,8 +9,7 @@ namespace ServiceAPI.Dal
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string AcademicYear { get; set; }
-
+      
         /// <summary>
         /// List of teaching
         /// </summary>

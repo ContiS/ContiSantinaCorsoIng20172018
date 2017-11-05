@@ -1,0 +1,40 @@
+<h1>Teachings List <button (click)="addNewTeaching()"> + </button></h1>
+
+<p *ngIf="!teachings"><em>Loading...</em></p>
+
+<div class="student-home">
+    <div class="students-list" *ngIf="teachings">
+        <div *ngFor="let tchng of teachings"
+            [class.selected]="tchng === selectedTeaching"
+            (click)="onSelect(tchng)"
+             [hidden]="tchng.deleted"
+             >
+            <span class="badge">{{tchng.id || '-' }}</span> {{tchng.name}}<span>{{tchng.hasChanges?'*':''}}</span>
+            <span class="badge" style="float: right;" (click)="delete(tchng)">delete</span>
+        </div>
+    </div>
+    <div *ngIf="selectedTeaching" class="student-detail">
+        <h2 *ngIf="selectedTeaching.id > 0">{{selectedTeaching.id}} - {{selectedTeaching.name}} {{selectedTeaching.surname}}</h2>
+        <h2 *ngIf="!selectedTeaching.id">New Teaching</h2>
+        <div>
+            <label>Name: </label>
+            <input [(ngModel)]="selectedTeaching.name" placeholder="name" />
+        </div>
+        <div>
+            <label>Credit Number: </label>
+            <input [(ngModel)]="selectedTeaching.creditNumber" placeholder="creditNumber" />
+        </div>
+        <div>
+            <label>Semester: </label>
+            <input [(ngModel)]="selectedTeaching.semester" placeholder="semester" />
+        </div>
+        <div>
+            <label>Years: </label>
+            <input [(ngModel)]="selectedTeaching.years" placeholder="years" />
+        </div>
+    </div>
+</div>
+
+<div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create" (click)="saveChanges()">
+    <span>SAVE</span>
+</div>

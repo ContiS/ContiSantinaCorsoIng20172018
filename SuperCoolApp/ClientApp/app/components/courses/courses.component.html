@@ -1,0 +1,28 @@
+<h1>Courses List <button (click)="addNewCourse()"> + </button></h1>
+
+<p *ngIf="!courses"><em>Loading...</em></p>
+
+<div class="student-home">
+    <div class="students-list" *ngIf="courses">
+        <div *ngFor="let crs of courses"
+            [class.selected]="crs === selectedCourse"
+            (click)="onSelect(crs)"
+             [hidden]="crs.deleted"
+             >
+            <span class="badge">{{crs.id || '-' }}</span> {{crs.name}}<span>{{crs.hasChanges?'*':''}}</span>
+            <span class="badge" style="float: right;" (click)="delete(crs)">delete</span>
+        </div>
+    </div>
+    <div *ngIf="selectedCourse" class="student-detail">
+        <h2 *ngIf="selectedCourse.id > 0">{{selectedCourse.id}} - {{selectedCourse.name}} {{selectedCourse.surname}}</h2>
+        <h2 *ngIf="!selectedCourse.id">New Course</h2>
+        <div>
+            <label>Name: </label>
+            <input [(ngModel)]="selectedCourse.name" placeholder="name" />
+        </div>
+    </div>
+</div>
+
+<div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create" (click)="saveChanges()">
+    <span>SAVE</span>
+</div>

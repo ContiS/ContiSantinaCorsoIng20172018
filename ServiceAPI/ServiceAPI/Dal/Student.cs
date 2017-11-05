@@ -11,10 +11,10 @@ namespace ServiceAPI.Dal
         public string Name { get; set; }
         public string Surname { get; set; }
         public string BirthPlace { get; set; }
-        public string RegistrationNumber { get; set; }
-        public bool Gender { get; set; } //true male,false female
+      //  public string RegistrationNumber { get; set; }
+        public string AcademicYear { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public bool Regular { get; set; }
+       // public bool Regular { get; set; }
         public virtual Course Course { get; set; }
     }
 }
