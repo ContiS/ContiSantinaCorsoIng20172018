@@ -37,9 +37,17 @@
             <input [(ngModel)]="selectedStudent.regular" placeholder="regular" />
         </div>
         <div>
-            <label>Date Of Birth: </label>
+            <label>Date Of Birth (yyyy-mm-dd): </label>
             <input [(ngModel)]="selectedStudent.dateOfBirth" placeholder="birth" />
         </div>
+        <div>
+            <label>Course ID: </label>
+            <input [(ngModel)]="selectedStudent.course.id" placeholder="course id" />
+        </div>
+        <div>
+            <label>Course Name: </label>
+            <input [(ngModel)]="selectedStudent.course.name" placeholder="course name" />
+        </div>        
     </div>
 </div>
 

@@ -128,8 +128,10 @@ class Student {
     private _birthPlace: string = "";
     private _academicYear: string = "";
     private _regular: boolean = true;
-
+    
     private _dateOfBirth: Date;
+    private _course: Course;
+
     public hasChanges: boolean;
     public deleted: boolean = false;
 
@@ -191,6 +193,15 @@ class Student {
         console.log("set dateOfBirth");
     }
 
+    get course(): Course {
+        return this._course;
+    }
+    set course(d: Course) {
+        this._course = d;
+        this.hasChanges = true;
+        console.log("set course");
+    }
+
     public toJSON() {
         return {
             id: this.id,
@@ -200,6 +211,40 @@ class Student {
             academicYear: this.academicYear,
             regular: this.regular,
             dateOfBirth: this._dateOfBirth,
+            course: this._course.toJSON()
+        };
+    };
+}
+
+class Course {
+    private _id: number;
+    private _name: string = "";
+
+    public hasChanges: boolean;
+    public deleted: boolean = false;
+
+    get id(): number {
+        return this._id;
+    }
+    set id(n: number) {
+        this._id = n;
+        this.hasChanges = true;
+        console.log("set id");
+    }
+
+    get name(): string {
+        return this._name;
+    }
+    set name(n: string) {
+        this._name = n;
+        this.hasChanges = true;
+        console.log("set name");
+    }
+
+    public toJSON() {
+        return {
+            id: this._id,
+            name: this._name
         };
     };
 }

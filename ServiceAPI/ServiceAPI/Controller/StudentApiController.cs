@@ -24,14 +24,20 @@ namespace ServiceAPI
                 await parallelism.WaitAsync();
 
                 using (var context = new UniversityDbContext())
-                {
+                { 
                     return Ok(context.Students.ToList());
                 }
+            }
+            catch(Exception e)
+            {
+                int i = 0;
+            
             }
             finally
             {
                 parallelism.Release();
             }
+            return Ok(null);
         }
 
         [HttpGet("student")]
