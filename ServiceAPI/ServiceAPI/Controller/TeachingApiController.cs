@@ -25,7 +25,13 @@ namespace ServiceAPI
 
                 using (var context = new UniversityDbContext())
                 {
-                    return Ok(context.Teachings.ToList());
+                    var teachingsToReturn = context.Teachings.ToList();
+                    foreach (var teach in teachingsToReturn)
+                    {
+                        context.Entry(teach).Reference(c => c.Teacher).Load();
+                        context.Entry(teach).Reference(c => c.Course).Load();
+                    }
+                    return Ok(teachingsToReturn);
                 }
             }
             finally
@@ -48,11 +54,21 @@ namespace ServiceAPI
         {
             using (var context = new UniversityDbContext())
             {
-                context.Teachings.Add(teachings);
 
-                await context.SaveChangesAsync();
+                try
+                {
+                    context.Courses.Attach(teachings.Course);
+                    context.Teachers.Attach(teachings.Teacher);
+                    context.Teachings.Add(teachings);
 
-                return Ok();
+                    await context.SaveChangesAsync();
+
+                    return Ok();
+                }
+                catch (Exception e)
+                {
+                    return Ok();
+                }
             }
         }
 

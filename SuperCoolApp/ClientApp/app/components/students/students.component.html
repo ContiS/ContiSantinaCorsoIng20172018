@@ -41,12 +41,10 @@
             <input [(ngModel)]="selectedStudent.dateOfBirth" placeholder="birth" />
         </div>
         <div>
-            <label>Course ID: </label>
-            <input [(ngModel)]="selectedStudent.course.id" placeholder="course id" />
-        </div>
-        <div>
-            <label>Course Name: </label>
-            <input [(ngModel)]="selectedStudent.course.name" placeholder="course name" />
+            <label>Actual Course: {{selectedStudent.course.name}} - </label>
+            <select [(ngModel)]="selectedCourse" (ngModelChange)="selectCourse()">
+                <option *ngFor="let c of courses" [ngValue]="c"> {{c.name}} </option>
+            </select>
         </div>        
     </div>
 </div>

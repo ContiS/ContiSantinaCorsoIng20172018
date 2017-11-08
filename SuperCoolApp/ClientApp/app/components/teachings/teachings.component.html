@@ -32,6 +32,18 @@
             <label>Years: </label>
             <input [(ngModel)]="selectedTeaching.years" placeholder="years" />
         </div>
+        <div>
+            <label>Actual Course: {{selectedTeaching.course.name}} - </label>
+            <select [(ngModel)]="selectedCourse" (ngModelChange)="selectCourse()">
+                <option *ngFor="let c of courses" [ngValue]="c"> {{c.name}} </option>
+            </select>
+        </div>
+        <div>
+            <label>Actual Teacher: {{selectedTeaching.teacher.name}} {{selectedTeaching.teacher.surname}} - </label>
+            <select [(ngModel)]="selectedTeacher" (ngModelChange)="selectTeacher()">
+                <option *ngFor="let t of teachers" [ngValue]="t"> {{t.name}} {{t.surname}} </option>
+            </select>
+        </div>
     </div>
 </div>
 

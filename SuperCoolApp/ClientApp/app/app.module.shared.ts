@@ -11,6 +11,7 @@ import { StudentsComponent } from './components/students/students.component';
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { CoursesComponent } from './components/courses/courses.component';
 import { TeachingsComponent } from './components/teachings/teachings.component';
+import { TeachingsSearchComponent } from './components/teachingsSearch/teachingsSearch.component';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { TeachingsComponent } from './components/teachings/teachings.component';
         StudentsComponent,
         TeachersComponent,
         CoursesComponent,
-        TeachingsComponent 
+		TeachingsComponent, 
+		TeachingsSearchComponent
     ],
     imports: [
         CommonModule,
@@ -32,7 +34,8 @@ import { TeachingsComponent } from './components/teachings/teachings.component';
             { path: 'students', component: StudentsComponent },
             { path: 'teachers', component: TeachersComponent },
             { path: 'courses', component: CoursesComponent },
-            { path: 'teachings', component: TeachingsComponent },
+			{ path: 'teachings', component: TeachingsComponent },
+			{ path: 'teachingsSearch', component: TeachingsSearchComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ]

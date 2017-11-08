@@ -36,7 +36,12 @@
                     <a [routerLink]="['/teachings']">
                         <span class='glyphicon glyphicon-education'></span> Teachings
                     </a>
-                </li>            
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/teachingsSearch']">
+                        <span class='glyphicon glyphicon-education'></span> Search Teachings
+                    </a>
+                </li>   
             </ul>
         </div>
     </div>

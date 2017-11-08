@@ -4,20 +4,23 @@ import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/forkJoin';
 
 @Component({
-    selector: 'teachings',
-    templateUrl: './teachings.component.html',
+    selector: 'teachingsSearch',
+    templateUrl: './teachingsSearch.component.html',
     styleUrls: ['../students.component.css']
 })
-export class TeachingsComponent {
+export class TeachingsSearchComponent {
 	public teachings: Teaching[];
 	public courses: Course[];
 	public teachers: Teacher[];
 	public selectedTeaching: Teaching | undefined;
-	public selectedTeacher: Teacher | undefined;
-	public selectedCourse: Course | undefined;
+	public bycredit: string = "";
+	public byyear: string = "";
+	public byname: string = "";
+	public originalTeachings: Teaching[];
 
+	
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
-        this.refreshData();
+		this.refreshData();
     }
 
     async refreshData() {
@@ -42,42 +45,8 @@ export class TeachingsComponent {
 
             this.teachings = teachingList;
 
-            this.selectTeaching();
-		}, error => console.error(error));
-
-		this.http.get(this.baseUrl + 'api/coursemanagement/courses').subscribe(result => {
-			let courseList = [];
-
-			for (let cours of result.json() as Course[]) {
-
-				let csr = new Course();
-				csr.id = cours.id;
-				csr.name = cours.name;
-				courseList.push(csr);
-			}
-
-			console.log("ok");
-
-			this.courses = courseList;
-
-		}, error => console.error(error));
-
-		this.http.get(this.baseUrl + 'api/teachermanagement/teachers').subscribe(result => {
-			let teacherList = [];
-
-			for (let teach of result.json() as Teacher[]) {
-
-				let tch = new Teacher();
-				tch.id = teach.id;
-				tch.name = teach.name;
-				tch.surname = teach.surname;
-				teacherList.push(tch);
-			}
-
-			console.log("ok");
-
-			this.teachers = teacherList;
-
+			this.selectTeaching();
+			this.originalTeachings = teachingList;
 		}, error => console.error(error));
     }
 
@@ -89,30 +58,11 @@ export class TeachingsComponent {
         for (let tchng of this.teachings) {
             if (tchng.deleted == false) {
 				this.selectedTeaching = tchng;
-				this.selectedCourse = new Course();
-				this.selectedCourse.name = this.selectedTeaching.course.name;
-				this.selectedCourse.id = this.selectedTeaching.course.id;
-				this.selectedTeacher = new Teacher();
-				this.selectedTeacher.name = this.selectedTeaching.teacher.name;
-				this.selectedTeacher.surname = this.selectedTeaching.teacher.surname;
-				this.selectedTeacher.id = this.selectedTeaching.teacher.id;
-                break;
+				break;
             }
 
         }
     }
-
-	selectCourse(): void {
-		if (this.selectedTeaching !== undefined && this.selectedCourse !== undefined) {
-			this.selectedTeaching.course = this.selectedCourse;
-		}
-	}
-
-	selectTeacher(): void {
-		if (this.selectedTeaching !== undefined && this.selectedTeacher !== undefined) {
-			this.selectedTeaching.teacher = this.selectedTeacher;
-		}
-	}
 
     async putData(): Promise<void> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -159,24 +109,45 @@ export class TeachingsComponent {
         }
     }
 
-    addNewTeaching(): void {
-		this.selectedTeaching = new Teaching();
-		this.selectedTeaching.teacher = new Teacher();
-		this.selectedTeaching.course = new Course();
-        this.selectedTeaching.hasChanges = true;
-        this.teachings.push(this.selectedTeaching);
-    }
-
     async saveChanges(): Promise<void> {
         await this.putData();
         //console.log("update completed");
         //await this.refreshData();
-    }
+	}
 
-    delete(teaching: Teaching): void {
-        teaching.deleted = true;
-        this.selectTeaching();
-    }
+	searchbycredit(): void {
+		this.teachings = new Array<Teaching>();
+		for (var i = 0; i < this.originalTeachings.length; i++) {
+			if (this.originalTeachings[i].creditNumber == this.bycredit) {
+				this.teachings.push(this.originalTeachings[i]);
+			}
+		}
+	}
+
+	searchbyyear(): void {
+		this.teachings = new Array<Teaching>();
+		for (var i = 0; i < this.originalTeachings.length; i++) {
+			if (this.originalTeachings[i].years == this.byyear) {
+				this.teachings.push(this.originalTeachings[i]);
+			}
+		}
+	}
+
+	searchbyname(): void {
+		this.teachings = new Array<Teaching>();
+		for (var i = 0; i < this.originalTeachings.length; i++) {
+			if (this.originalTeachings[i].name == this.byname) {
+				this.teachings.push(this.originalTeachings[i]);
+			}
+		}
+	}
+
+	clear(): void {
+		this.teachings = new Array<Teaching>();
+		for (var i = 0; i < this.originalTeachings.length; i++) {
+			this.teachings.push(this.originalTeachings[i]);
+		}
+	}
 }
 
 class Teaching {

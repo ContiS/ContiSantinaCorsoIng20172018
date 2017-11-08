@@ -24,8 +24,14 @@ namespace ServiceAPI
                 await parallelism.WaitAsync();
 
                 using (var context = new UniversityDbContext())
-                { 
-                    return Ok(context.Students.ToList());
+                {
+                    var studentsToReturn = context.Students.ToList();
+                    foreach (var stud in studentsToReturn)
+                    {
+                        context.Entry(stud).Reference(c => c.Course).Load();
+                        
+                    }
+                    return Ok(studentsToReturn);
                 }
             }
             catch(Exception e)
@@ -54,11 +60,18 @@ namespace ServiceAPI
         {
             using (var context = new UniversityDbContext())
             {
-                context.Students.Add(student);
+                try
+                {
+                    context.Courses.Attach(student.Course);
+                    context.Students.Add(student);
+                    await context.SaveChangesAsync();
 
-                await context.SaveChangesAsync();
-
-                return Ok();
+                    return Ok();
+                }
+                catch (Exception e)
+                {
+                    return Ok();
+                }
             }
         }
 

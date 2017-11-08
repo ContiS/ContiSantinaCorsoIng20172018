@@ -9,8 +9,10 @@ import 'rxjs/add/observable/forkJoin';
     styleUrls: ['../students.component.css']
 })
 export class StudentsComponent {
-    public students: Student[];
-    public selectedStudent: Student | undefined;
+	public students: Student[];
+	public courses: Course[];
+	public selectedStudent: Student | undefined;
+	public selectedCourse: Course | undefined;
 
     constructor(private http: Http, @Inject('BASE_URL') private baseUrl: string) {
         this.refreshData();
@@ -25,11 +27,12 @@ export class StudentsComponent {
                 let student = new Student();
                 student.id = stud.id;
                 student.name = stud.name;
-                student.surname = stud.surname,
-                student.birthPlace = stud.birthPlace,
-                student.academicYear = stud.academicYear,
-                student.regular = stud.regular,
-                student.dateOfBirth = stud.dateOfBirth;
+				student.surname = stud.surname;
+				student.birthPlace = stud.birthPlace;
+				student.academicYear = stud.academicYear;
+				student.regular = stud.regular;
+				student.dateOfBirth = stud.dateOfBirth;
+				if (stud.course !== undefined) student.course = stud.course;
                 student.hasChanges = false;
                 studentList.push(student);
             }
@@ -39,7 +42,24 @@ export class StudentsComponent {
             this.students = studentList;
 
             this.selectStudent();
-        }, error => console.error(error));
+		}, error => console.error(error));
+
+		this.http.get(this.baseUrl + 'api/coursemanagement/courses').subscribe(result => {
+			let courseList = [];
+
+			for (let cours of result.json() as Course[]) {
+
+				let csr = new Course();
+				csr.id = cours.id;
+				csr.name = cours.name;
+				courseList.push(csr);
+			}
+
+			console.log("ok");
+
+			this.courses = courseList;
+
+		}, error => console.error(error));
     }
 
 
@@ -49,13 +69,21 @@ export class StudentsComponent {
 
         for (let stud of this.students) {
             if (stud.deleted == false) {
-                this.selectedStudent = stud;
-                break;
+				this.selectedStudent = stud;
+				this.selectedCourse = new Course();
+				this.selectedCourse.name = this.selectedStudent.course.name; 
+				this.selectedCourse.id = this.selectedStudent.course.id;
+				break;
             }
 
         }
     }
 
+	selectCourse(): void {
+		if (this.selectedStudent !== undefined && this.selectedCourse !== undefined) {
+			this.selectedStudent.course = this.selectedCourse;
+		}
+	}
 
     async putData(): Promise<void> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -103,7 +131,8 @@ export class StudentsComponent {
     }
 
     addNewStudent(): void {
-        this.selectedStudent = new Student();
+		this.selectedStudent = new Student();
+		this.selectedStudent.course = new Course();
         this.selectedStudent.hasChanges = true;
         this.students.push(this.selectedStudent);
     }
@@ -200,7 +229,7 @@ class Student {
         this._course = d;
         this.hasChanges = true;
         console.log("set course");
-    }
+	}
 
     public toJSON() {
         return {

@@ -1,0 +1,54 @@
+<h1>Search Teachings</h1>
+
+<p *ngIf="!teachings"><em>Loading...</em></p>
+
+<div class="student-home">
+    <div class="students-list" *ngIf="teachings">
+        <div *ngFor="let tchng of teachings"
+            [class.selected]="tchng === selectedTeaching"
+            (click)="onSelect(tchng)"
+             >
+            <span class="badge">{{tchng.id || '-' }}</span> {{tchng.name}}<span>{{tchng.hasChanges?'*':''}}</span>
+        </div>
+    </div>
+    <div *ngIf="selectedTeaching" class="student-detail">
+        <h2 *ngIf="selectedTeaching.id > 0">{{selectedTeaching.id}} - {{selectedTeaching.name}} {{selectedTeaching.surname}}</h2>
+        <h2 *ngIf="!selectedTeaching.id">New Teaching</h2>
+        <div>
+            <label>Name: {{selectedTeaching.name}}</label>
+            
+        </div>
+        <div>
+            <label>Credit Number: {{selectedTeaching.creditNumber}}</label>
+        </div>
+        <div>
+            <label>Semester: {{selectedTeaching.semester}}</label>
+        </div>
+        <div>
+            <label>Years: {{selectedTeaching.years}}</label>
+        </div>
+        <div>
+            <label>Actual Course: {{selectedTeaching.course.name}}</label>
+        </div>
+        <div>
+            <label>Actual Teacher: {{selectedTeaching.teacher.name}} {{selectedTeaching.teacher.surname}}</label>
+        </div>
+    </div>
+</div>
+<div>
+    <div>
+        <label>By Credits: </label> <input [(ngModel)]="bycredit" />
+        <button (click)="searchbycredit()"> Search! </button>
+    </div>
+    <div>
+        <label>By Name: </label> <input [(ngModel)]="byname" />
+        <button (click)="searchbyname()"> Search! </button>
+    </div>
+    <div>
+        <label>By Year: </label> <input [(ngModel)]="byyear" />
+        <button (click)="searchbyyear()"> Search! </button>
+    </div>
+    <div>
+        <button (click)="clear()"> Clear! </button>
+    </div>
+</div>
